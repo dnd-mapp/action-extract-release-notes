@@ -1,0 +1,30 @@
+name: Pull request
+
+on:
+    pull_request:
+
+permissions:
+    contents: read
+    packages: read
+
+jobs:
+    ci:
+        name: Continuous integration
+        runs-on: ubuntu-22.04
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+              with:
+                  fetch-depth: 0
+
+            - name: Run continuous integration checks
+              uses: ./.github/actions/ci
+              with:
+                  node-auth-token: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Lint commit messages
+              shell: bash
+              env:
+                  BASE: ${{ github.event.pull_request.base.sha }}
+                  HEAD: ${{ github.event.pull_request.head.sha }}
+              run: pnpm commitlint --from "$BASE" --to "$HEAD"

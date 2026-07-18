@@ -1,0 +1,25 @@
+name: Continuous integration
+description: Runs continuous integration checks
+
+inputs:
+    node-auth-token:
+        required: true
+        description: >
+            A token with `read:packages` access, used to authenticate
+            `pnpm i` against the `@dnd-mapp` scope on GitHub Packages.
+
+runs:
+    using: composite
+    steps:
+        - name: Setup workspace
+          uses: dnd-mapp/action-setup-workspace@d5d3148fe3fbe34055eb006f685f190524c16522 # v2.0.0
+          with:
+              node-auth-token: ${{ inputs.node-auth-token }}
+
+        - name: Check formatting
+          shell: bash
+          run: pnpm format-check
+
+        - name: Lint markdown
+          shell: bash
+          run: pnpm lint-md

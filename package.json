@@ -1,0 +1,45 @@
+{
+  "name": "project-name",
+  "description": "TODO: describe this project",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "author": "NoNamer777",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dnd-mapp/project-name.git"
+  },
+  "homepage": "https://github.com/dnd-mapp/project-name#readme",
+  "bugs": "https://github.com/dnd-mapp/project-name/issues",
+  "scripts": {
+    "prepare": "husky || true",
+    "lint-md": "markdownlint-cli2 \"**/*.md\"",
+    "format": "prettier -w .",
+    "format-check": "prettier -l ."
+  },
+  "engines": {
+    "node": ">=24.18.0"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "24.18.0",
+      "onFail": "error"
+    },
+    "packageManager": {
+      "name": "pnpm",
+      "version": "11.13.1",
+      "onFail": "error"
+    }
+  },
+  "type": "module",
+  "devDependencies": {
+    "@commitlint/cli": "~21.2.1",
+    "@commitlint/config-conventional": "~21.2.0",
+    "husky": "~9.1.7",
+    "lint-staged": "~17.0.8",
+    "markdownlint-cli2": "~0.23.0",
+    "prettier": "~3.9.5",
+    "prettier-plugin-organize-imports": "~4.3.0"
+  }
+}

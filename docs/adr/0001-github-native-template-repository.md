@@ -1,0 +1,10 @@
+# Use GitHub's native template-repository mechanism, with a manual rename checklist
+
+This repo is a [GitHub template repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template): `Settings → Template repository` is enabled, giving it a **Use this template** button. Clicking that button copies the current file tree into a new repo as a plain, one-time file copy, no git history, and critically, no variable substitution. Placeholder values (`project-name` in `package.json`, README badges, etc.) are renamed manually, following the checklist in [README.md](README.md#using-this-template).
+
+The alternative was a scaffolding tool with built-in templating, such as [Copier](https://copier.readthedocs.io) or [Cookiecutter](https://cookiecutter.readthedocs.io), which prompts for project name/description and substitutes them into every file automatically, or a custom bootstrap script committed to this repo that does the same on first run. Either would remove the manual rename step entirely. That was rejected: it adds a new tool (or custom script) to install, learn, and maintain, for a rename step that only happens once per new repo and takes a couple of minutes by hand. GitHub's native mechanism also needs zero setup beyond the one repo-settings checkbox, and the "Use this template" button is the more discoverable, official entry point for anyone starting a new `dnd-mapp` repo.
+
+## Considered options
+
+- A scaffolding tool with prompt-driven variable substitution (Copier, Cookiecutter, Yeoman). Rejected: new tooling dependency for a one-time, few-minutes rename task; also means learning a templating DSL for anyone who wants to edit the template itself.
+- A custom bootstrap script (e.g. an `pnpm run init` a new-repo author runs once) that rewrites placeholders automatically. Rejected: it's tooling this repo would have to build and maintain itself, and it only runs if someone remembers to invoke it, GitHub doesn't call anything automatically after "Use this template."
