@@ -1,0 +1,26 @@
+name: Extract release notes
+
+description: >
+    Extracts the Keep a Changelog-formatted section for the released version from the
+    consuming repo's `CHANGELOG.md`, failing fast if no matching section exists, and
+    optionally writing it to `.github/release-notes.md`.
+
+inputs:
+    write-file:
+        required: false
+        default: 'true'
+        description: >
+            Whether to write the extracted section to `.github/release-notes.md`. Set to
+            `'false'` for a fail-fast existence check only, without producing the file.
+
+runs:
+    using: composite
+    steps:
+        - name: Check changelog section
+          shell: bash
+          run: node "${{ github.action_path }}/dist/check-changelog-section.js"
+
+        - name: Write release notes
+          if: inputs.write-file == 'true'
+          shell: bash
+          run: node "${{ github.action_path }}/dist/prepare-release-notes.js"
