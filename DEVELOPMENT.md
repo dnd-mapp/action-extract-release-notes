@@ -17,5 +17,9 @@ This also installs the [Husky](https://typicode.github.io/husky) git hooks: `lin
 
 ## Common tasks
 
+- `pnpm build` (compile `src/` to `dist/`)
+- `pnpm test-ci` (run tests once, with coverage)
+- `pnpm test` (run tests in watch mode, with the Vitest UI)
+- `pnpm typecheck` (type-check `src/` without emitting)
 - `pnpm format` / `pnpm format-check` (format, or check formatting, of the whole repo with Prettier)
 - `pnpm lint-md` (lint all Markdown files)
