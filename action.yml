@@ -18,9 +18,13 @@ runs:
     steps:
         - name: Check changelog section
           shell: bash
-          run: node "${{ github.action_path }}/dist/check-changelog-section.js"
+          env:
+              ACTION_PATH: ${{ github.action_path }}
+          run: node "$ACTION_PATH/dist/check-changelog-section.js"
 
         - name: Write release notes
           if: inputs.write-file == 'true'
           shell: bash
-          run: node "${{ github.action_path }}/dist/prepare-release-notes.js"
+          env:
+              ACTION_PATH: ${{ github.action_path }}
+          run: node "$ACTION_PATH/dist/prepare-release-notes.js"
