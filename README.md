@@ -1,28 +1,21 @@
-# project-name
+# action-extract-release-notes
 
-[![Push to main](https://github.com/dnd-mapp/project-name/actions/workflows/push-main.yml/badge.svg)](https://github.com/dnd-mapp/project-name/actions/workflows/push-main.yml)
-[![License](https://img.shields.io/github/license/dnd-mapp/project-name)](LICENSE)
+[![Push to main](https://github.com/dnd-mapp/action-extract-release-notes/actions/workflows/push-main.yml/badge.svg)](https://github.com/dnd-mapp/action-extract-release-notes/actions/workflows/push-main.yml)
+[![License](https://img.shields.io/github/license/dnd-mapp/action-extract-release-notes)](LICENSE)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://prettier.io)
 
-TODO: one-line description of this project.
+Reusable GitHub Action that extracts the Keep a Changelog-formatted section for a released version out of a consuming repo's `CHANGELOG.md`, either as a fail-fast existence check or to produce the content for a GitHub Release.
 
-## Using this template
+## Usage
 
-This repo is a [GitHub template repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template): clicking **Use this template** copies these files as-is into a new repo, there is no variable substitution. After generating a new repo from it, go through this checklist:
+```yaml
+- name: Extract release notes
+  uses: dnd-mapp/action-extract-release-notes@<SHA> # v1.0.0
+  with:
+      write-file: 'true'
+```
 
-- [ ] Replace `project-name` everywhere (badges above, `package.json` `name`/`repository`/`homepage`/`bugs`, this heading) with the real repo name.
-- [ ] Fill in `package.json` `description` and this README's one-line description.
-- [ ] Set `package.json` `version` to wherever this project's versioning actually starts.
-- [ ] Drop `package.json` `private: true` only if this project will actually be published somewhere.
-- [ ] Configure branch protection (or a ruleset) on `main`: require pull requests, require the `Continuous Integration` status check from `pull-request.yml`, and set the merge method to **merge commits only** (disable squash and rebase merging in Settings → General → Pull Requests). The `commitlint` step in `pull-request.yml` is a CI backstop for the local Husky hook, not redundant with it, and it only stays meaningful if commits land in `main`'s history unmodified; squash/rebase merging defeats that. See [dnd-mapp/tsconfig's ADR 0001](https://github.com/dnd-mapp/tsconfig/blob/main/docs/adr/0001-commit-message-enforcement.md) for the full reasoning. This has to be set per repo, GitHub org-wide rulesets require GitHub Enterprise.
-- [ ] Delete this "Using this template" section once the checklist is done.
-
-Depending on what this repo is actually for, add:
-
-- **A publishable npm package**: reinstate a `release.yml` release workflow (see [dnd-mapp/tsconfig](https://github.com/dnd-mapp/tsconfig) for a working example that publishes to GitHub Package Registry), and drop `private: true` from `package.json`.
-- **A JavaScript/TypeScript GitHub Action**: add `typescript` and `@types/node` as devDependencies, a build step (e.g. [`@vercel/ncc`](https://github.com/vercel/ncc)) to bundle to `dist/`, an `action.yml` manifest at the repo root, and a release workflow that tags (and moves a major-version tag like `v1`).
-- **A composite (YAML-only) GitHub Action**: just add an `action.yml` manifest at the repo root, no other changes needed.
-- **An Angular, NestJS, or plain TypeScript/Node project**: add `typescript`, `@types/node`, and a `tsconfig.json` extending the matching [`@dnd-mapp/tsconfig`](https://github.com/dnd-mapp/tsconfig) preset.
+Runs against the checked-out repository, reading the `RELEASED_VERSION` environment variable (the pushed tag, e.g. `v1.2.3`) to find the matching `## [x.x.x]` heading in `CHANGELOG.md`. Always checks that a matching section exists, failing the step if not. When `write-file` is `'true'` (the default), also writes the section to `.github/release-notes.md`. Pass `write-file: 'false'` for a fail-fast existence check only, without producing the file.
 
 ## Contributing
 

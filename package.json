@@ -1,21 +1,25 @@
 {
-  "name": "project-name",
-  "description": "TODO: describe this project",
+  "name": "action-extract-release-notes",
+  "description": "Reusable GitHub Action to extract a release's changelog section for release notes",
   "version": "0.0.0",
   "private": true,
   "license": "MIT",
   "author": "NoNamer777",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dnd-mapp/project-name.git"
+    "url": "git+https://github.com/dnd-mapp/action-extract-release-notes.git"
   },
-  "homepage": "https://github.com/dnd-mapp/project-name#readme",
-  "bugs": "https://github.com/dnd-mapp/project-name/issues",
+  "homepage": "https://github.com/dnd-mapp/action-extract-release-notes#readme",
+  "bugs": "https://github.com/dnd-mapp/action-extract-release-notes/issues",
   "scripts": {
     "prepare": "husky || true",
     "lint-md": "markdownlint-cli2 \"**/*.md\"",
     "format": "prettier -w .",
-    "format-check": "prettier -l ."
+    "format-check": "prettier -l .",
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit -p tsconfig.build.json && tsc --noEmit -p tsconfig.spec.json",
+    "test": "vitest --ui",
+    "test-ci": "vitest run"
   },
   "engines": {
     "node": ">=24.18.0"
@@ -36,10 +40,17 @@
   "devDependencies": {
     "@commitlint/cli": "~21.2.1",
     "@commitlint/config-conventional": "~21.2.0",
+    "@dnd-mapp/tsconfig": "~2.0.0",
+    "@types/node": "~24.13.3",
+    "@vitest/coverage-v8": "~4.1.10",
+    "@vitest/ui": "~4.1.10",
     "husky": "~9.1.7",
     "lint-staged": "~17.0.8",
     "markdownlint-cli2": "~0.23.0",
     "prettier": "~3.9.5",
-    "prettier-plugin-organize-imports": "~4.3.0"
+    "prettier-plugin-organize-imports": "~4.3.0",
+    "typescript": "~5.9.3",
+    "vite": "~8.1.4",
+    "vitest": "~4.1.10"
   }
 }
