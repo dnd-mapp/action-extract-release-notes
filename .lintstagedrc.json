@@ -1,4 +1,5 @@
 {
     "*.{json,yaml,yml}": "prettier --write",
-    "*.md": "markdownlint-cli2 --fix"
+    "*.md": "markdownlint-cli2 --fix",
+    "src/**/*.ts": ["bash -c 'pnpm build'", "bash -c 'git add dist'"]
 }
