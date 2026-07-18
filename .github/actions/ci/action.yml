@@ -23,3 +23,17 @@ runs:
         - name: Lint markdown
           shell: bash
           run: pnpm lint-md
+
+        - name: Typecheck
+          shell: bash
+          run: pnpm typecheck
+
+        - name: Check dist is up-to-date
+          shell: bash
+          run: |
+              pnpm build
+              git diff --exit-code -- dist
+
+        - name: Run tests
+          shell: bash
+          run: pnpm test-ci
