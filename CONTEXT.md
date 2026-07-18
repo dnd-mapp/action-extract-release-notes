@@ -1,9 +1,16 @@
-# @dnd-mapp/project-template
+# action-extract-release-notes
 
-Scaffold repo for new `dnd-mapp` repos (Angular apps, NestJS services, plain TypeScript/Node projects, and GitHub Actions), carrying the org's shared tooling and process conventions, not product code.
+A reusable composite GitHub Action that extracts the Keep a Changelog-formatted section for a released version out of a consuming repo's `CHANGELOG.md`, either as a fail-fast existence check or to produce the content for a GitHub Release.
 
 ## Language
 
-**Template repository**:  
-GitHub's own feature (`Settings → Template repository`), which gives a repo a **Use this template** button. Clicking it copies the repo's current file tree into a new repo, as a plain, one-time file copy: no git history, and no variable substitution of any kind. Renaming placeholder values (package name, badge URLs, etc.) in a newly generated repo is a manual step, see the checklist in [README.md](README.md#using-this-template).  
-_Avoid_: "scaffolding tool" or "generator" for this mechanism, those imply prompt-driven variable substitution (e.g. Copier, Cookiecutter, Yeoman), which this repo deliberately does not use, see [ADR 0001](docs/adr/0001-github-native-template-repository.md).
+**Release notes section**:  
+The Keep a Changelog-formatted block in `CHANGELOG.md` for one version, bounded by its `## [x.x.x] - YYYY-MM-DD` heading and the next `## [...]` heading, or the end of the file if there is none. Refers to both the in-place text and the extracted content; there's no separate transformation between them.  
+_Avoid_: "changelog section" alone, "changelog" stays reserved for the file as a whole.
+
+**Released version**:  
+The value derived from the `RELEASED_VERSION` environment variable (the pushed tag, e.g. `v1.2.3`), with its leading `v` stripped, used to find the matching heading.  
+_Avoid_: "release tag", that's `action-validate-release-tag`'s term for the raw tag ref; this action only ever deals with the stripped, `package.json`-comparable form.
+
+**Notes output path**:  
+The fixed location, `.github/release-notes.md`, that the write step produces. Not configurable.
