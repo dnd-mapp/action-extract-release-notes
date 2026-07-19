@@ -5,7 +5,7 @@ A reusable composite GitHub Action that extracts the Keep a Changelog-formatted 
 ## Language
 
 **Release notes section**:  
-The Keep a Changelog-formatted block in `CHANGELOG.md` for one version, bounded by its `## [x.x.x] - YYYY-MM-DD` heading and the next `## [...]` heading, or the end of the file if there is none. Refers to both the in-place text and the extracted content; there's no separate transformation between them.  
+The Keep a Changelog-formatted block in `CHANGELOG.md` for one version, bounded by its `## [x.x.x] - YYYY-MM-DD` heading and the next `## [...]` heading, or the end of the file if there is none (excluding any trailing Keep a Changelog link-reference lines, `[x.x.x]: URL`, which are never part of a release's notes). Refers to both the in-place text and the extracted content; there's no separate transformation between them.  
 _Avoid_: "changelog section" alone, "changelog" stays reserved for the file as a whole.
 
 **Released version**:  

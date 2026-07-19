@@ -12,12 +12,17 @@ function escapeRegExp(value) {
     return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 /**
+ * Matches a Keep a Changelog link-reference-definition line, e.g. `[1.2.3]: https://...`.
+ */
+const LINK_REFERENCE_PATTERN = /^\[.+\]:\s/;
+/**
  * Extracts the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)-formatted section
  * for `version`, including its `## [x.x.x] - YYYY-MM-DD` heading line.
  *
  * The section is bounded by the matching `## [x.x.x] ...` heading and the next `## [...]`
  * heading that follows it (typically the previous release), or the end of the file if there
- * is none.
+ * is none. Any trailing Keep a Changelog link-reference lines (`[x.x.x]: URL`) are excluded,
+ * since they're never part of a release's notes.
  *
  * @param changelog - The full contents of `CHANGELOG.md`.
  * @param version - The released version to look up, without a leading `v` (e.g. `1.2.3`).
@@ -35,5 +40,13 @@ export function extractReleaseNotesSection(changelog, version) {
     const contentStart = sectionStart + headingMatch[0].length;
     const nextHeadingMatch = /^## \[.*$/m.exec(changelog.slice(contentStart));
     const sectionEnd = nextHeadingMatch ? contentStart + nextHeadingMatch.index : changelog.length;
-    return changelog.slice(sectionStart, sectionEnd).trim() + '\n';
+    const lines = changelog.slice(sectionStart, sectionEnd).trim().split('\n');
+    while (lines.length > 0) {
+        const lastLine = lines[lines.length - 1] ?? '';
+        if (lastLine.trim() !== '' && !LINK_REFERENCE_PATTERN.test(lastLine)) {
+            break;
+        }
+        lines.pop();
+    }
+    return lines.join('\n') + '\n';
 }
