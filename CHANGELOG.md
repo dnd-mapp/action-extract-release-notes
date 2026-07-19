@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Fixed
+
+- Extracted release notes no longer include the consuming repo's trailing Keep a Changelog link-reference lines (e.g. `[1.2.3]: URL`) when the released version had no following `## [...]` heading in `CHANGELOG.md` (typically the first release, or the oldest of several).
+
 ## [1.0.0] - 2026-07-18
 
 ### Added
