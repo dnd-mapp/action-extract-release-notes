@@ -1,0 +1,60 @@
+name: Release
+
+on:
+    push:
+        tags:
+            - 'v[0-9]+.[0-9]+.[0-9]+'
+
+permissions:
+    contents: read
+    packages: read
+
+jobs:
+    validate:
+        name: Validate release tag
+        runs-on: ubuntu-22.04
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+              with:
+                  fetch-depth: 0
+
+            - name: Validate release tag
+              uses: dnd-mapp/action-validate-release-tag@cc07c1784188a50b4d1f931131bb14e480b2dd2a # v1.0.0
+
+            - name: Check changelog section
+              env:
+                  RELEASED_VERSION: ${{ github.ref_name }}
+              uses: ./
+              with:
+                  write-file: 'false'
+
+            - name: Run continuous integration checks
+              uses: ./.github/actions/ci
+              with:
+                  node-auth-token: ${{ secrets.GITHUB_TOKEN }}
+
+    create-release:
+        name: Create GitHub release
+        needs: validate
+        runs-on: ubuntu-22.04
+        environment: release
+        permissions:
+            contents: write
+            discussions: write
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+            - name: Setup workspace
+              uses: dnd-mapp/action-setup-workspace@d5d3148fe3fbe34055eb006f685f190524c16522 # v2.0.0
+              with:
+                  install-dependencies: 'false'
+
+            - name: Prepare release notes
+              env:
+                  RELEASED_VERSION: ${{ github.ref_name }}
+              uses: ./
+
+            - name: Create GitHub release
+              uses: dnd-mapp/action-create-github-release@16f4127e1c004e084e70c6874098153a6b85457b # v1.0.0
